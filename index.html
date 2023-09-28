@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wills Website</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom, black, #A77BFF);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        /* Add your content styles here */
+        .content {
+            text-align: center;
+        }
+
+        /* Style the warning box */
+        .warning-box {
+            background-color: #FFA500; /* Orange color */
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Style the warning icon */
+        .warning-icon {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        /* Style the form */
+        .login-form {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Style form inputs and buttons */
+        .login-form input[type="text"],
+        .login-form input[type="password"],
+        .login-form button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
+        }
+
+        /* Style the login button */
+        .login-form button {
+            background-color: #A77BFF;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Style the notification */
+        .notification {
+            display: none;
+            background-color: rgba(0, 255, 0, 0.8); /* Green color for success */
+            color: white;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="warning-box">
+        <div class="warning-icon">&#9888;</div> <!-- Warning icon -->
+        <p>Some Stuff May Be Broken</p> <!-- Your warning message here -->
+    </div>
+    <div class="content">
+        <h1>Welcome</h1>
+        <p>Please Login To Continue</p>
+        <div class="login-form">
+            <form onsubmit="return loginUser()">
+                <input type="text" placeholder="Username" required id="username" value="Will">
+                <input type="password" placeholder="Password" required id="password" value="1234">
+                <button type="submit">Login</button>
+            </form>
+            <div class="notification" id="notification"></div>
+        </div>
+    </div>
+
+    <script>
+        function loginUser() {
+            const usernameInput = document.getElementById("username");
+            const passwordInput = document.getElementById("password");
+            const notification = document.getElementById("notification");
+
+            // Check if the entered username and password match the expected values
+            if (usernameInput.value === "Will" && passwordInput.value === "1234") {
+                notification.style.backgroundColor = "rgba(0, 255, 0, 0.8)";
+                notification.textContent = "Login successful! Redirecting...";
+                // Redirect to the dashboard after a short delay (e.g., 2 seconds)
+                setTimeout(() => {
+                    window.location.href = "dashboard.html";
+                }, 2000);
+            } else {
+                notification.style.backgroundColor = "rgba(255, 0, 0, 0.8)"; // Red color for error
+                notification.textContent = "Incorrect credentials. Please try again.";
+            }
+
+            notification.style.display = "block"; // Show the notification
+            return false; // Prevent form submission
+        }
+    </script>
+</body>
+</html>
