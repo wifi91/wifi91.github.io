@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wills Website</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom, black, #A77BFF);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        /* Add your content styles here */
+        .content {
+            text-align: center;
+        }
+
+        /* Style the warning box */
+        .warning-box {
+            background-color: #FFA500; /* Orange color */
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Style the warning icon */
+        .warning-icon {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        /* Style the form */
+        .login-form, .signup-form {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Style form inputs and buttons */
+        .login-form input[type="text"],
+        .login-form input[type="password"],
+        .login-form button,
+        .signup-form input[type="text"],
+        .signup-form input[type="password"],
+        .signup-form button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
+        }
+
+        /* Style the login button */
+        .login-form button, .signup-form button, .toggle-button {
+            background-color: #A77BFF;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Style the notification */
+        .notification {
+            display: none;
+            background-color: rgba(0, 255, 0, 0.8); /* Green color for success */
+            color: white;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="warning-box">
+        <div class="warning-icon">&#9888;</div> <!-- Warning icon -->
+        <p></p> <!-- Your warning message here -->
+    </div>
+    <div class="content">
+        <h1>Welcome</h1>
+        <p>Please Login To Continue</p>
+        <div class="login-form">
+            <form onsubmit="return loginUser()">
+                <input type="text" placeholder="Username" required id="username" value="">
+                <input type="password" placeholder="Password" required id="password" value="">
+                <button type="submit">Login</button>
+            </form>
+            <div class="notification" id="notification"></div>
+        </div>
+        <div class="signup-form" style="display:none;" id="signup-form">
+            <h2>Sign Up</h2>
+            <form onsubmit="return signupUser()">
+                <input type="text" placeholder="Username" required id="signup-username" value="">
+                <input type="password" placeholder="Password" required id="signup-password" value="">
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+        <button class="toggle-button" onclick="toggleSignupForm()">Show Sign Up Form</button>
+    </div>
+
+    <script>
+        function toggleSignupForm() {
+            const signupForm = document.getElementById("signup-form");
+            const signupButton = document.querySelector(".toggle-button");
+            
+            if (signupForm.style.display === "none") {
+                signupForm.style.display = "block";
+                signupButton.textContent = "Hide Sign Up Form";
+            } else {
+                signupForm.style.display = "none";
+                signupButton.textContent = "Show Sign Up Form";
+            }
+        }
+
+        function loginUser() {
+            const usernameInput = document.getElementById("username");
+            const passwordInput = document.getElementById("password");
+            const notification = document.getElementById("notification");
+
+            const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+
+            // Check if the entered username and password match the expected values
+            const user = storedUsers.find(u => u.username === usernameInput.value && u.password === passwordInput.value);
+
+            if (user) {
+                notification.style.backgroundColor = "rgba(0, 255, 0, 0.8)";
+                notification.textContent = "Login successful! Redirecting...";
+
+                // Redirect to the dashboard after a short delay (e.g., 2 seconds)
+                setTimeout(() => {
+                    window.location.href = "dashboard.html";
+                }, 2000);
+            } else {
+                notification.style.backgroundColor = "rgba(255, 0, 0, 0.8)"; // Red color for error
+                notification.textContent = "Incorrect credentials. Please try again.";
+            }
+
+            notification.style.display = "block"; // Show the notification
+            return false; // Prevent form submission
+        }
+
+        function signupUser() {
+            const signupUsernameInput = document.getElementById("signup-username");
+            const signupPasswordInput = document.getElementById("signup-password");
+
+            const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+
+            // Check if the entered username already exists
+            if (storedUsers.some(u => u.username === signupUsernameInput.value)) {
+                alert("Username already exists. Please choose another one.");
+                return false; // Prevent form submission
+            }
+
+            // Add the new user to the stored users
+            storedUsers.push({
+                username: signupUsernameInput.value,
+                password: signupPasswordInput.value
+            });
+
+            // Update the local storage with the new user data
+            localStorage.setItem("users", JSON.stringify(storedUsers));
+
+            alert("User signed up successfully!");
+
+            // Clear the sign-up form
+            signupUsernameInput.value = "";
+            signupPasswordInput.value = "";
+
+            return false; // Prevent form submission
+        }
+    </script>
+</body>
+</html>
